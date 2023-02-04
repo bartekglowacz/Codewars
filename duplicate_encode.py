@@ -19,3 +19,4 @@ for x in range(0, len(alphabet_list), 1):
     if word_list.count(alphabet_list[x]) != 0:
         print(f"{alphabet_list[x]} -> {word_list.count(alphabet_list[x])}")
 
+
