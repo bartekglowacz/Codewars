@@ -20,3 +20,5 @@ number = random.randint(-9, 9) * random.randint(-9, 99)
 print(number)
 
 count_bits(number)
+
+# end
