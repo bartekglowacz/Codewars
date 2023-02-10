@@ -9,19 +9,33 @@ Examples:
 "Success"  =>  ")())())"
 "(( @"     =>  "))(("
 """
+import string
 
-alphabet = "qwertyuiopasdfghjklzxcvbnm"
-alphabet_list = list(alphabet)
-alphabet_list.sort()
-
-print(alphabet_list)
 print("Wprowadź słowo")
 word = input()
-print(word)
-word_list = list(word)
-
-for x in range(0, len(alphabet_list), 1):
-    if word_list.count(alphabet_list[x]) != 0:
-        print(f"{alphabet_list[x]} -> {word_list.count(alphabet_list[x])}")
+signs_list = []
 
 
+def duplicate_encode(arg):
+    arg = arg.casefold()
+    for x in arg:
+        counter = arg.count(x)
+        if counter == 1:
+            x = "("
+            signs_list.append(x)
+        if counter > 1:
+            x = ")"
+            signs_list.append(x)
+
+    # print("Lista: ", signs_list, "długość: ", len(signs_list))
+    signs = "".join(signs_list)
+    print(signs, len(signs))
+    return signs
+
+
+duplicate_encode(word)
+
+# print("\nwywołanie funkcji: ", duplicate_encode(word), "długość: ", len(duplicate_encode(word)))
+# print(duplicate_encode(word), len(duplicate_encode(word)))
+# print(duplicate_encode(word), len(duplicate_encode(word)))
+# print(duplicate_encode(word), len(duplicate_encode(word)))
