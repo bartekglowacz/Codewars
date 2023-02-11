@@ -1,0 +1,277 @@
+Index: stat.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/stat.py b/stat.py
+new file mode 100644
+--- /dev/null	(date 1676127022027)
++++ b/stat.py	(date 1676127022027)
+@@ -0,0 +1,114 @@
++"""
++You are the "computer expert" of a local Athletic Association (C.A.A.). Many teams of runners come to compete.
++Each time you get a string of all race results of every team who has run.
++For example here is a string showing the individual results of a team of 5 runners:
++
++"01|15|59, 1|47|6, 01|17|20, 1|32|34, 2|3|17"
++
++Each part of the string is of the form: h|m|s where h, m, s (h for hour, m for minutes, s for seconds)
++are positive or null integer (represented as strings) with one or two digits. Substrings in the input string are separated by ,  or ,.
++
++To compare the results of the teams you are asked for giving three statistics; range, average and median.
++
++Range : difference between the lowest and highest values. In {4, 6, 9, 3, 7} the lowest value is 3, and the highest is 9, so the range is 9 − 3 = 6.
++
++Mean or Average : To calculate mean, add together all the numbers and then divide the sum by the total count of numbers.
++
++Median : In statistics, the median is the number separating the higher half of a data sample from the lower half.
++The median of a finite list of numbers can be found by arranging all the observations from the lowest value to the highest value and picking the middle one
++(e.g., the median of {3, 3, 5, 9, 11} is 5) when there is an odd number of observations.
++If there is an even number of observations, then there is no single middle value;
++the median is then defined to be the mean of the two middle values (the median of {3, 5, 6, 9} is (5 + 6) / 2 = 5.5).
++
++Your task is to return a string giving these 3 values. For the example given above, the string result will be
++
++"Range: 00|47|18 Average: 01|35|15 Median: 01|32|34"
++
++of the form: "Range: hh|mm|ss Average: hh|mm|ss Median: hh|mm|ss"`
++
++where hh, mm, ss are integers (represented by strings) with each 2 digits.
++"""
++import math
++import statistics
++
++
++def stat(strg):
++    record = "01|15|59, 1|47|16, 01|17|20, 1|32|34, 2|17|17"
++    # record = "01|15|59, 1|47|6, 01|17|20, 1|32|34, 2|3|17"
++    # print("oryginalna forma: ", record)
++    record_list = record.split(",")
++    # print("jako lista: ", record_list)
++
++    for count, x in enumerate(record_list):
++        # print(f"record: {count} = {x}")
++        record_list[count] = x.split("|")
++    # print("lista rekordów sformatowana: ", record_list)
++
++    record_1 = record_list[0]
++    record_2 = record_list[1]
++    record_3 = record_list[2]
++    record_4 = record_list[3]
++    record_5 = record_list[4]
++
++    time1 = int(record_1[0]) * 3600 + int(record_1[1]) * 60 + int(record_1[2])
++    time2 = int(record_2[0]) * 3600 + int(record_2[1]) * 60 + int(record_2[2])
++    time3 = int(record_3[0]) * 3600 + int(record_3[1]) * 60 + int(record_3[2])
++    time4 = int(record_4[0]) * 3600 + int(record_4[1]) * 60 + int(record_4[2])
++    time5 = int(record_5[0]) * 3600 + int(record_5[1]) * 60 + int(record_5[2])
++    # print(time1, time2, time3, time4, time5)
++
++    times_list = [time1, time2, time3, time4, time5]
++
++    Range = max(time1, time2, time3, time4, time5) - min(time1, time2, time3, time4, time5)
++    # Mean = (time1 + time2 + time3 + time4 + time5)/5
++    # Median = times_list.sort()
++    # Median = times_list[math.floor(len(times_list)/2)]
++    Mean_stat = statistics.mean(times_list)
++    Mean_stat = math.floor(Mean_stat)
++    Median_stat = statistics.median(times_list)
++    # print(f"{Range = }\n{Mean_stat = }\n{Median_stat = }")
++
++    if Range / 3600 < 1:
++        hours = "00"
++        minutes = math.floor(Range / 60)
++        seconds = Range - math.floor(Range / 60) * 60
++        Range_result = "Range: " + str(hours) + "|" + str(minutes) + "|" + str(seconds)
++        # print(Range_result)
++    else:
++        hours = math.floor(Range / 3600)
++        minutes = math.floor((Range - hours * 3600) / 60)
++        seconds = math.floor(Range - hours * 3600 - minutes * 60)
++        Range_result = "Range: " + str("%02d" % hours) + "|" + str("%02d" % minutes) + "|" + str("%02d" % seconds)
++        # print(Range_result)
++
++    if Mean_stat / 3600 < 1:
++        hours = "00"
++        minutes = math.floor(Mean_stat / 60)
++        seconds = Mean_stat - math.floor(Mean_stat / 60) * 60
++        Mean_stat_result = "Mean_stat: " + str(hours) + "|" + str(minutes) + "|" + str(seconds)
++        # print(Mean_stat_result)
++    else:
++        hours = math.floor(Mean_stat / 3600)
++        minutes = math.floor((Mean_stat - hours * 3600) / 60)
++        seconds = math.floor(Mean_stat - hours * 3600 - minutes * 60)
++        Mean_stat_result = "Average: " + str("%02d" % hours) + "|" + str("%02d" % minutes) + "|" + str("%02d" % seconds)
++        # print(Mean_stat_result)
++
++    if Median_stat / 3600 < 1:
++        hours = "00"
++        minutes = math.floor(Median_stat / 60)
++        seconds = Median_stat - math.floor(Median_stat / 60) * 60
++        Median_stat_result = "Median_stat: " + str(hours) + "|" + str(minutes) + "|" + str(seconds)
++        # print(Median_stat_result)
++    else:
++        hours = math.floor(Median_stat / 3600)
++        minutes = math.floor((Median_stat - hours * 3600) / 60)
++        seconds = math.floor(Median_stat - hours * 3600 - minutes * 60)
++        Median_stat_result = "Median: " + str("%02d" % hours) + "|" + str("%02d" % minutes) + "|" + str(
++            "%02d" % seconds)
++        # print(Median_stat_result)
++    print(f"{Range_result} {Mean_stat_result} {Median_stat_result}")
++    return Range_result, Mean_stat_result, Median_stat_result
++
++
++stat(strg=0)
+Index: tmp.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/tmp.py b/tmp.py
+new file mode 100644
+--- /dev/null	(date 1676126137986)
++++ b/tmp.py	(date 1676126137986)
+@@ -0,0 +1,11 @@
++import math
++
++Range = 4805
++hours = math.floor(Range / 3600)
++minutes = math.floor((Range - hours * 3600) / 60)
++seconds = math.floor(Range - hours * 3600 - minutes * 60)
++Range_result = "Range: " + str("%02d" % hours) + "|" + str("%02d" % minutes) + "|" + str("%02d" % seconds)
++print(Range_result)
++
++# a = 2
++# print("%02d" % a)
+\ No newline at end of file
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"afd372cf-babb-4566-bbcb-573731d5b6c3\" name=\"Changes\" comment=\"ok\">\r\n      <change afterPath=\"$PROJECT_DIR$/maskify.py\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Python Script\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_BRANCH_BY_REPOSITORY\">\r\n      <map>\r\n        <entry key=\"$PROJECT_DIR$\" value=\"master\" />\r\n      </map>\r\n    </option>\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"MarkdownSettingsMigration\">\r\n    <option name=\"stateVersion\" value=\"1\" />\r\n  </component>\r\n  <component name=\"ProjectId\" id=\"2LGjaTx5ypPJt9qTkVPFC46arGn\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">{\r\n  &quot;keyToString&quot;: {\r\n    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\r\n    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;\r\n  }\r\n}</component>\r\n  <component name=\"RunManager\" selected=\"Python.maskify\">\r\n    <configuration name=\"duplicate_encode\" type=\"PythonConfigurationType\" factoryName=\"Python\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <module name=\"Codewars\" />\r\n      <option name=\"INTERPRETER_OPTIONS\" value=\"\" />\r\n      <option name=\"PARENT_ENVS\" value=\"true\" />\r\n      <envs>\r\n        <env name=\"PYTHONUNBUFFERED\" value=\"1\" />\r\n      </envs>\r\n      <option name=\"SDK_HOME\" value=\"\" />\r\n      <option name=\"WORKING_DIRECTORY\" value=\"$PROJECT_DIR$\" />\r\n      <option name=\"IS_MODULE_SDK\" value=\"true\" />\r\n      <option name=\"ADD_CONTENT_ROOTS\" value=\"true\" />\r\n      <option name=\"ADD_SOURCE_ROOTS\" value=\"true\" />\r\n      <option name=\"SCRIPT_NAME\" value=\"$PROJECT_DIR$/duplicate_encode.py\" />\r\n      <option name=\"PARAMETERS\" value=\"\" />\r\n      <option name=\"SHOW_COMMAND_LINE\" value=\"false\" />\r\n      <option name=\"EMULATE_TERMINAL\" value=\"false\" />\r\n      <option name=\"MODULE_MODE\" value=\"false\" />\r\n      <option name=\"REDIRECT_INPUT\" value=\"false\" />\r\n      <option name=\"INPUT_FILE\" value=\"\" />\r\n      <method v=\"2\" />\r\n    </configuration>\r\n    <configuration name=\"even_or_odd\" type=\"PythonConfigurationType\" factoryName=\"Python\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <module name=\"Codewars\" />\r\n      <option name=\"INTERPRETER_OPTIONS\" value=\"\" />\r\n      <option name=\"PARENT_ENVS\" value=\"true\" />\r\n      <envs>\r\n        <env name=\"PYTHONUNBUFFERED\" value=\"1\" />\r\n      </envs>\r\n      <option name=\"SDK_HOME\" value=\"\" />\r\n      <option name=\"WORKING_DIRECTORY\" value=\"$PROJECT_DIR$\" />\r\n      <option name=\"IS_MODULE_SDK\" value=\"true\" />\r\n      <option name=\"ADD_CONTENT_ROOTS\" value=\"true\" />\r\n      <option name=\"ADD_SOURCE_ROOTS\" value=\"true\" />\r\n      <option name=\"SCRIPT_NAME\" value=\"$PROJECT_DIR$/even_or_odd.py\" />\r\n      <option name=\"PARAMETERS\" value=\"\" />\r\n      <option name=\"SHOW_COMMAND_LINE\" value=\"false\" />\r\n      <option name=\"EMULATE_TERMINAL\" value=\"false\" />\r\n      <option name=\"MODULE_MODE\" value=\"false\" />\r\n      <option name=\"REDIRECT_INPUT\" value=\"false\" />\r\n      <option name=\"INPUT_FILE\" value=\"\" />\r\n      <method v=\"2\" />\r\n    </configuration>\r\n    <configuration name=\"maskify\" type=\"PythonConfigurationType\" factoryName=\"Python\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <module name=\"Codewars\" />\r\n      <option name=\"INTERPRETER_OPTIONS\" value=\"\" />\r\n      <option name=\"PARENT_ENVS\" value=\"true\" />\r\n      <envs>\r\n        <env name=\"PYTHONUNBUFFERED\" value=\"1\" />\r\n      </envs>\r\n      <option name=\"SDK_HOME\" value=\"\" />\r\n      <option name=\"WORKING_DIRECTORY\" value=\"$PROJECT_DIR$\" />\r\n      <option name=\"IS_MODULE_SDK\" value=\"true\" />\r\n      <option name=\"ADD_CONTENT_ROOTS\" value=\"true\" />\r\n      <option name=\"ADD_SOURCE_ROOTS\" value=\"true\" />\r\n      <option name=\"SCRIPT_NAME\" value=\"$PROJECT_DIR$/maskify.py\" />\r\n      <option name=\"PARAMETERS\" value=\"\" />\r\n      <option name=\"SHOW_COMMAND_LINE\" value=\"false\" />\r\n      <option name=\"EMULATE_TERMINAL\" value=\"false\" />\r\n      <option name=\"MODULE_MODE\" value=\"false\" />\r\n      <option name=\"REDIRECT_INPUT\" value=\"false\" />\r\n      <option name=\"INPUT_FILE\" value=\"\" />\r\n      <method v=\"2\" />\r\n    </configuration>\r\n    <configuration name=\"snake\" type=\"PythonConfigurationType\" factoryName=\"Python\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <module name=\"Codewars\" />\r\n      <option name=\"INTERPRETER_OPTIONS\" value=\"\" />\r\n      <option name=\"PARENT_ENVS\" value=\"true\" />\r\n      <envs>\r\n        <env name=\"PYTHONUNBUFFERED\" value=\"1\" />\r\n      </envs>\r\n      <option name=\"SDK_HOME\" value=\"\" />\r\n      <option name=\"WORKING_DIRECTORY\" value=\"$PROJECT_DIR$\" />\r\n      <option name=\"IS_MODULE_SDK\" value=\"true\" />\r\n      <option name=\"ADD_CONTENT_ROOTS\" value=\"true\" />\r\n      <option name=\"ADD_SOURCE_ROOTS\" value=\"true\" />\r\n      <option name=\"SCRIPT_NAME\" value=\"$PROJECT_DIR$/snake.py\" />\r\n      <option name=\"PARAMETERS\" value=\"\" />\r\n      <option name=\"SHOW_COMMAND_LINE\" value=\"false\" />\r\n      <option name=\"EMULATE_TERMINAL\" value=\"false\" />\r\n      <option name=\"MODULE_MODE\" value=\"false\" />\r\n      <option name=\"REDIRECT_INPUT\" value=\"false\" />\r\n      <option name=\"INPUT_FILE\" value=\"\" />\r\n      <method v=\"2\" />\r\n    </configuration>\r\n    <configuration name=\"split_strings\" type=\"PythonConfigurationType\" factoryName=\"Python\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <module name=\"Codewars\" />\r\n      <option name=\"INTERPRETER_OPTIONS\" value=\"\" />\r\n      <option name=\"PARENT_ENVS\" value=\"true\" />\r\n      <envs>\r\n        <env name=\"PYTHONUNBUFFERED\" value=\"1\" />\r\n      </envs>\r\n      <option name=\"SDK_HOME\" value=\"\" />\r\n      <option name=\"WORKING_DIRECTORY\" value=\"$PROJECT_DIR$\" />\r\n      <option name=\"IS_MODULE_SDK\" value=\"true\" />\r\n      <option name=\"ADD_CONTENT_ROOTS\" value=\"true\" />\r\n      <option name=\"ADD_SOURCE_ROOTS\" value=\"true\" />\r\n      <option name=\"SCRIPT_NAME\" value=\"$PROJECT_DIR$/split_strings.py\" />\r\n      <option name=\"PARAMETERS\" value=\"\" />\r\n      <option name=\"SHOW_COMMAND_LINE\" value=\"false\" />\r\n      <option name=\"EMULATE_TERMINAL\" value=\"false\" />\r\n      <option name=\"MODULE_MODE\" value=\"false\" />\r\n      <option name=\"REDIRECT_INPUT\" value=\"false\" />\r\n      <option name=\"INPUT_FILE\" value=\"\" />\r\n      <method v=\"2\" />\r\n    </configuration>\r\n    <recent_temporary>\r\n      <list>\r\n        <item itemvalue=\"Python.maskify\" />\r\n        <item itemvalue=\"Python.split_strings\" />\r\n        <item itemvalue=\"Python.duplicate_encode\" />\r\n        <item itemvalue=\"Python.snake\" />\r\n        <item itemvalue=\"Python.even_or_odd\" />\r\n      </list>\r\n    </recent_temporary>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"afd372cf-babb-4566-bbcb-573731d5b6c3\" name=\"Changes\" comment=\"\" />\r\n      <created>1675504377094</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1675504377094</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\".\">\r\n      <created>1675519986086</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1675519986086</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00002\" summary=\"ok\">\r\n      <created>1675520035903</created>\r\n      <option name=\"number\" value=\"00002\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1675520035903</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00003\" summary=\"in progress\">\r\n      <created>1675520079806</created>\r\n      <option name=\"number\" value=\"00003\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1675520079806</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00004\" summary=\".\">\r\n      <created>1675520090056</created>\r\n      <option name=\"number\" value=\"00004\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00004\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1675520090056</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00005\" summary=\".\">\r\n      <created>1675520145247</created>\r\n      <option name=\"number\" value=\"00005\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00005\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1675520145247</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00006\" summary=\".\">\r\n      <created>1675520156460</created>\r\n      <option name=\"number\" value=\"00006\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00006\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1675520156460</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00007\" summary=\"in progress\">\r\n      <created>1675520170171</created>\r\n      <option name=\"number\" value=\"00007\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00007\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1675520170171</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00008\" summary=\"in progress\">\r\n      <created>1675601038860</created>\r\n      <option name=\"number\" value=\"00008\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00008\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1675601038860</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00009\" summary=\"ok\">\r\n      <created>1676057155097</created>\r\n      <option name=\"number\" value=\"00009\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00009\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1676057155097</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00010\" summary=\"ok\">\r\n      <created>1676067706665</created>\r\n      <option name=\"number\" value=\"00010\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00010\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1676067706665</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"11\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\".\" />\r\n    <MESSAGE value=\"in progress\" />\r\n    <MESSAGE value=\"ok\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"ok\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision b3fb80dcb8d24d997bef0a75af888249e2a0bcc8)
++++ b/.idea/workspace.xml	(date 1676126650476)
+@@ -5,7 +5,8 @@
+   </component>
+   <component name="ChangeListManager">
+     <list default="true" id="afd372cf-babb-4566-bbcb-573731d5b6c3" name="Changes" comment="ok">
+-      <change afterPath="$PROJECT_DIR$/maskify.py" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/stat.py" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/tmp.py" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+@@ -44,7 +45,7 @@
+     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;
+   }
+ }</component>
+-  <component name="RunManager" selected="Python.maskify">
++  <component name="RunManager" selected="Python.stat">
+     <configuration name="duplicate_encode" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+       <module name="Codewars" />
+       <option name="INTERPRETER_OPTIONS" value="" />
+@@ -66,7 +67,7 @@
+       <option name="INPUT_FILE" value="" />
+       <method v="2" />
+     </configuration>
+-    <configuration name="even_or_odd" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
++    <configuration name="maskify" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+       <module name="Codewars" />
+       <option name="INTERPRETER_OPTIONS" value="" />
+       <option name="PARENT_ENVS" value="true" />
+@@ -78,7 +79,7 @@
+       <option name="IS_MODULE_SDK" value="true" />
+       <option name="ADD_CONTENT_ROOTS" value="true" />
+       <option name="ADD_SOURCE_ROOTS" value="true" />
+-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/even_or_odd.py" />
++      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/maskify.py" />
+       <option name="PARAMETERS" value="" />
+       <option name="SHOW_COMMAND_LINE" value="false" />
+       <option name="EMULATE_TERMINAL" value="false" />
+@@ -87,7 +88,7 @@
+       <option name="INPUT_FILE" value="" />
+       <method v="2" />
+     </configuration>
+-    <configuration name="maskify" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
++    <configuration name="split_strings" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+       <module name="Codewars" />
+       <option name="INTERPRETER_OPTIONS" value="" />
+       <option name="PARENT_ENVS" value="true" />
+@@ -99,7 +100,7 @@
+       <option name="IS_MODULE_SDK" value="true" />
+       <option name="ADD_CONTENT_ROOTS" value="true" />
+       <option name="ADD_SOURCE_ROOTS" value="true" />
+-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/maskify.py" />
++      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/split_strings.py" />
+       <option name="PARAMETERS" value="" />
+       <option name="SHOW_COMMAND_LINE" value="false" />
+       <option name="EMULATE_TERMINAL" value="false" />
+@@ -108,7 +109,7 @@
+       <option name="INPUT_FILE" value="" />
+       <method v="2" />
+     </configuration>
+-    <configuration name="snake" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
++    <configuration name="stat" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+       <module name="Codewars" />
+       <option name="INTERPRETER_OPTIONS" value="" />
+       <option name="PARENT_ENVS" value="true" />
+@@ -120,7 +121,7 @@
+       <option name="IS_MODULE_SDK" value="true" />
+       <option name="ADD_CONTENT_ROOTS" value="true" />
+       <option name="ADD_SOURCE_ROOTS" value="true" />
+-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/snake.py" />
++      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/stat.py" />
+       <option name="PARAMETERS" value="" />
+       <option name="SHOW_COMMAND_LINE" value="false" />
+       <option name="EMULATE_TERMINAL" value="false" />
+@@ -129,7 +130,7 @@
+       <option name="INPUT_FILE" value="" />
+       <method v="2" />
+     </configuration>
+-    <configuration name="split_strings" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
++    <configuration name="tmp" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+       <module name="Codewars" />
+       <option name="INTERPRETER_OPTIONS" value="" />
+       <option name="PARENT_ENVS" value="true" />
+@@ -141,7 +142,7 @@
+       <option name="IS_MODULE_SDK" value="true" />
+       <option name="ADD_CONTENT_ROOTS" value="true" />
+       <option name="ADD_SOURCE_ROOTS" value="true" />
+-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/split_strings.py" />
++      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/tmp.py" />
+       <option name="PARAMETERS" value="" />
+       <option name="SHOW_COMMAND_LINE" value="false" />
+       <option name="EMULATE_TERMINAL" value="false" />
+@@ -152,11 +153,11 @@
+     </configuration>
+     <recent_temporary>
+       <list>
++        <item itemvalue="Python.stat" />
++        <item itemvalue="Python.tmp" />
+         <item itemvalue="Python.maskify" />
+         <item itemvalue="Python.split_strings" />
+         <item itemvalue="Python.duplicate_encode" />
+-        <item itemvalue="Python.snake" />
+-        <item itemvalue="Python.even_or_odd" />
+       </list>
+     </recent_temporary>
+   </component>
+@@ -239,7 +240,14 @@
+       <option name="project" value="LOCAL" />
+       <updated>1676067706665</updated>
+     </task>
+-    <option name="localTasksCounter" value="11" />
++    <task id="LOCAL-00011" summary="ok">
++      <created>1676113773731</created>
++      <option name="number" value="00011" />
++      <option name="presentableId" value="LOCAL-00011" />
++      <option name="project" value="LOCAL" />
++      <updated>1676113773731</updated>
++    </task>
++    <option name="localTasksCounter" value="12" />
+     <servers />
+   </component>
+   <component name="VcsManagerConfiguration">
