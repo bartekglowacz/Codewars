@@ -61,7 +61,10 @@ def stat(strg):
     Range_result = "Range: " + Range_result[0] + "|" + Range_result[1] + "|" + Range_result[2]
     Average_result = "Average: " + Average_result[0] + "|" + Average_result[1] + "|" + Average_result[2]
     Median_result = "Median: " + Median_result[0] + "|" + Median_result[1] + "|" + Median_result[2]
-    return f"{Range_result}, {Average_result}, {Median_result}"
+    Result = Range_result + " " + Average_result + " " + Median_result
+    # print(Result)
+    return Result
 
 
 print(stat("01|15|59, 1|47|6, 01|17|20, 1|32|34, 2|3|17"))
+print(type(stat("01|15|59, 1|47|6, 01|17|20, 1|32|34, 2|3|17")))
